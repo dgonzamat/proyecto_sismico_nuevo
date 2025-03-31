@@ -502,3 +502,29 @@ html {
   background-color: #121212;
   color: #e0e0e0;
 }
+
+/* Estilos para la información de fuentes de datos */
+.data-source-info {
+  background-color: #e8f5e9;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin: 15px auto 0;
+  max-width: 800px;
+  font-size: 0.9rem;
+  border-left: 4px solid #4caf50;
+}
+
+.dark-mode .data-source-info {
+  background-color: #1b5e20;
+  border-left: 4px solid #81c784;
+}
+
+.data-attribution {
+  font-size: 0.85rem;
+  margin-top: 10px;
+  color: #777;
+}
+
+.dark-mode .data-attribution {
+  color: #aaa;
+}

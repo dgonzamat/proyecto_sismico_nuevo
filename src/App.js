@@ -86,6 +86,14 @@ function App() {
                 <h4>Sistema Predictivo de Sismicidad para Chile</h4>
                 <p>Este proyecto implementa un modelo avanzado de predicción sísmica basado en análisis multifactorial de datos históricos, mediciones geofísicas y patrones de recurrencia. Desarrollado como herramienta de apoyo para la gestión de riesgos y planificación de respuestas ante desastres naturales.</p>
                 
+                <h4>Fuentes de Datos</h4>
+                <p>El sistema utiliza datos sísmicos históricos y en tiempo real de:</p>
+                <ul>
+                  <li><strong>Centro Sismológico Nacional de Chile (CSN):</strong> Registros históricos desde 1900 y datos en tiempo real de la red de monitoreo nacional.</li>
+                  <li><strong>Agencia Meteorológica de Japón (JMA):</strong> Datos de la red de monitoreo sísmico japonesa y modelos predictivos desarrollados tras el Gran Terremoto de Tohoku de 2011.</li>
+                  <li><strong>Servicio Geológico de Estados Unidos (USGS):</strong> Datos complementarios para validación de modelos.</li>
+                </ul>
+                
                 <h4>Características principales:</h4>
                 <ul>
                   <li>Análisis de ciclos sísmicos históricos (1900-2025)</li>
@@ -139,6 +147,9 @@ function App() {
             <header className="App-header">
               <h1>Sistema de Predicción Sísmica</h1>
               <p>Basado en datos de centros sismológicos de Chile y Japón</p>
+              <div className="data-source-info">
+                <p>Los datos utilizados en este sistema provienen de fuentes oficiales del Centro Sismológico Nacional de Chile y la Agencia Meteorológica de Japón (JMA)</p>
+              </div>
               <button 
                 className="theme-toggle" 
                 onClick={toggleDarkMode}
@@ -163,6 +174,7 @@ function App() {
               
               <footer className="App-footer">
                 <p>© 2025 Sistema de Predicción Sísmica | <a href="#acerca">Acerca del proyecto</a></p>
+                <p className="data-attribution">Datos proporcionados por el Centro Sismológico Nacional de Chile y la Agencia Meteorológica de Japón</p>
               </footer>
             </>
           )}
