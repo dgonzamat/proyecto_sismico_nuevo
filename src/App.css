@@ -113,6 +113,7 @@ html {
   background-color: #f5f5f5;
   border-radius: 8px;
   margin-bottom: 30px;
+  scroll-margin-top: 70px; /* This ensures the section doesn't get hidden under the nav when scrolled to */
 }
 
 .coming-soon {
