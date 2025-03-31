@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/proyecto_sismico_nuevo/static/css/main.3a5e7b3c.css",
-    "main.js": "/proyecto_sismico_nuevo/static/js/main.bd611387.js",
+    "main.css": "/proyecto_sismico_nuevo/static/css/main.074242e0.css",
+    "main.js": "/proyecto_sismico_nuevo/static/js/main.afee9082.js",
     "static/js/453.a75a66de.chunk.js": "/proyecto_sismico_nuevo/static/js/453.a75a66de.chunk.js",
     "index.html": "/proyecto_sismico_nuevo/index.html",
-    "main.3a5e7b3c.css.map": "/proyecto_sismico_nuevo/static/css/main.3a5e7b3c.css.map",
-    "main.bd611387.js.map": "/proyecto_sismico_nuevo/static/js/main.bd611387.js.map",
+    "main.074242e0.css.map": "/proyecto_sismico_nuevo/static/css/main.074242e0.css.map",
+    "main.afee9082.js.map": "/proyecto_sismico_nuevo/static/js/main.afee9082.js.map",
     "453.a75a66de.chunk.js.map": "/proyecto_sismico_nuevo/static/js/453.a75a66de.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3a5e7b3c.css",
-    "static/js/main.bd611387.js"
+    "static/css/main.074242e0.css",
+    "static/js/main.afee9082.js"
   ]
 }
