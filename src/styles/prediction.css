@@ -1,0 +1,63 @@
+.prediccion-sismica-container {
+  text-align: left;
+}
+
+.chart-container {
+  margin-bottom: 30px;
+}
+
+.prediction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.prediction-table th, 
+.prediction-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.prediction-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.high-risk {
+  background-color: rgba(255, 82, 82, 0.1);
+}
+
+.medium-risk {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.low-risk {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.high-risk-item {
+  background-color: rgba(255, 82, 82, 0.1);
+  border-left: 4px solid #ff5252;
+}
+
+.medium-risk-item {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+}
+
+.low-risk-item {
+  background-color: rgba(76, 175, 80, 0.1);
+  border-left: 4px solid #4caf50;
+}
+
+.risk-levels {
+  list-style: none;
+  padding: 0;
+}
+
+.risk-levels li {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}

@@ -1,5 +1,14 @@
 import React, { useState, useEffect, createContext } from 'react';
-import './App.css';
+// Replace the single CSS import with multiple imports for the new CSS files
+import './styles/base.css';
+import './styles/navigation.css';
+import './styles/sections.css';
+import './styles/prediction.css';
+import './styles/correlation.css';
+import './styles/map.css';
+import './styles/darkmode.css';
+import './styles/components.css';
+import './styles/responsive.css';
 import PrediccionSismica from './components/PrediccionSismica';
 import CorrelacionSolarSismica from './components/CorrelacionSolarSismica';
 import MapaRiesgo from './components/MapaRiesgo';
@@ -12,7 +21,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('mapa');
   const [darkMode, setDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  // If you have the tabHistory state, update it too
+  // Define tabHistory only once
   const [tabHistory, setTabHistory] = useState(['mapa']);
   
   // Verificar preferencia de tema guardada
@@ -41,7 +50,8 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
   
-  const [tabHistory, setTabHistory] = useState(['prediccion']);
+  // Remove this duplicate declaration
+  // const [tabHistory, setTabHistory] = useState(['prediccion']);
   
   // Modificar el manejador de clics para guardar historial de navegación
   const handleTabClick = (e, tabId) => {

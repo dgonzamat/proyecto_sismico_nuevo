@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+// CSS imports should be at the top with other imports
+import './styles/base.css';
+import './styles/navigation.css';
+import './styles/sections.css';
+import './styles/prediction.css';
+import './styles/correlation.css';
+import './styles/map.css';
+import './styles/darkmode.css';
+import './styles/components.css';
+import './styles/responsive.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
