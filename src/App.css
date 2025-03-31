@@ -164,7 +164,153 @@ html {
   font-style: italic;
 }
 
-.coming-soon p {
+/* Fix selector specificity issue */
+.coming-soon > p:not(.availability) {
   font-size: 18px;
   color: #3f51b5;
+}
+
+/* Add responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+  .main-nav ul {
+    flex-direction: column;
+  }
+  
+  .main-nav a {
+    padding: 10px;
+  }
+  
+  .feature-list {
+    padding-left: 10px;
+  }
+  
+  .App-header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Add focus states for accessibility */
+.main-nav a:focus {
+  outline: 2px solid white;
+  outline-offset: -2px;
+}
+
+/* Estilos para la sección de correlación solar */
+.correlation-content, .map-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Fix chart-container conflict by making it more specific */
+.prediccion-sismica-container .chart-container {
+  margin-bottom: 30px;
+}
+
+.correlation-content .chart-container,
+.map-content .map-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Add print media query for better printing */
+@media print {
+  .main-nav {
+    display: none;
+  }
+  
+  .App-content {
+    max-width: 100%;
+  }
+  
+  .section-container {
+    break-inside: avoid;
+  }
+}
+
+/* Add transition for smoother tab switching */
+.section-container {
+  transition: opacity 0.3s ease;
+}
+
+/* Improve contrast for better accessibility */
+.App-header p {
+  color: #555; /* Slightly darker for better contrast */
+}
+
+/* Fix inconsistent border-radius usage */
+.section-container,
+.coming-soon,
+.chart-container,
+.map-container,
+.data-analysis,
+.risk-legend,
+.historical-data,
+.placeholder-chart,
+.placeholder-map {
+  border-radius: 8px; /* Consistent border radius */
+}
+
+.data-analysis, .risk-legend, .historical-data {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.placeholder-chart, .placeholder-map {
+  height: 300px;
+  background-color: #f9f9f9;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+.risk-levels {
+  list-style: none;
+  padding: 0;
+}
+
+.risk-levels li {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.high-risk-item {
+  background-color: rgba(255, 82, 82, 0.1);
+  border-left: 4px solid #ff5252;
+}
+
+.medium-risk-item {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+}
+
+.low-risk-item {
+  background-color: rgba(76, 175, 80, 0.1);
+  border-left: 4px solid #4caf50;
+}
+
+@media (min-width: 768px) {
+  .correlation-content, .map-content {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .chart-container, .map-container {
+    flex: 2;
+    min-width: 60%;
+  }
+  
+  .data-analysis, .risk-legend, .historical-data {
+    flex: 1;
+    min-width: 30%;
+  }
 }
