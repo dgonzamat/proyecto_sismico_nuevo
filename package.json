@@ -2,7 +2,10 @@
   "name": "proyecto_sismico_nuevo",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://dgonzamat.github.io/proyecto_sismico_nuevo",
+  "homepage": "https://dgonamat.github.io/proyecto_sismico_nuevo",
+  "dependencies": {
+    // ... tus dependencias existentes
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
