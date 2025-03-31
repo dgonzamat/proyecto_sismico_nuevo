@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import PrediccionSismica from './components/PrediccionSismica';
-import ErrorBoundary from './components/ErrorBoundary'; // You'll need to create this component
 
 function App() {
   const [activeTab, setActiveTab] = useState('prediccion');
@@ -149,27 +148,17 @@ function App() {
         <p>Basado en datos de centros sismológicos de Chile y Japón</p>
       </header>
       
-      <nav className="main-nav" aria-label="Navegación principal">
-        <ul role="menubar">
-          <li role="none">
-            <a 
-              href="#prediccion" 
-              role="menuitem"
-              className={activeTab === 'prediccion' ? 'active' : ''} 
-              onClick={(e) => handleTabClick(e, 'prediccion')}
-              aria-current={activeTab === 'prediccion' ? 'page' : undefined}
-            >
-              Predicción Sísmica
-            </a>
-          </li>
-          {/* Add similar ARIA attributes to other menu items */}
+      <nav className="main-nav">
+        <ul>
+          <li><a href="#prediccion" className={activeTab === 'prediccion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'prediccion')}>Predicción Sísmica</a></li>
+          <li><a href="#correlacion" className={activeTab === 'correlacion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'correlacion')}>Correlación Solar</a></li>
+          <li><a href="#mapa" className={activeTab === 'mapa' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'mapa')}>Mapa de Riesgo</a></li>
+          <li><a href="#acerca" className={activeTab === 'acerca' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'acerca')}>Acerca del Proyecto</a></li>
         </ul>
       </nav>
       
       <main className="App-content">
-        <ErrorBoundary>
-          {renderActiveContent()}
-        </ErrorBoundary>
+        {renderActiveContent()}
       </main>
     </div>
   );
