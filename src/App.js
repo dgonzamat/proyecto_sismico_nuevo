@@ -79,9 +79,9 @@ function App() {
               <div className="risk-legend">
                 <h3>Leyenda de Riesgo</h3>
                 <ul className="risk-levels">
-                  <li className="high-risk-item">Alto riesgo (>70% probabilidad en 50 años)</li>
+                  <li className="high-risk-item">Alto riesgo (&gt;70% probabilidad en 50 años)</li>
                   <li className="medium-risk-item">Riesgo medio (30-70% probabilidad en 50 años)</li>
-                  <li className="low-risk-item">Bajo riesgo (<30% probabilidad en 50 años)</li>
+                  <li className="low-risk-item">Bajo riesgo (&lt;30% probabilidad en 50 años)</li>
                 </ul>
               </div>
               
