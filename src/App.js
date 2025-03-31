@@ -38,10 +38,28 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
   
+  const [tabHistory, setTabHistory] = useState(['prediccion']);
+  
+  // Modificar el manejador de clics para guardar historial de navegación
   const handleTabClick = (e, tabId) => {
     e.preventDefault();
-    setActiveTab(tabId);
-    window.history.pushState(null, '', `#${tabId}`);
+    if (activeTab !== tabId) {
+      setTabHistory(prev => [...prev, tabId]);
+      setActiveTab(tabId);
+      window.history.pushState(null, '', `#${tabId}`);
+    }
+  };
+  
+  // Función para volver atrás en la navegación
+  const handleGoBack = () => {
+    if (tabHistory.length > 1) {
+      const newHistory = [...tabHistory];
+      newHistory.pop(); // Eliminar el tab actual
+      const previousTab = newHistory[newHistory.length - 1];
+      setActiveTab(previousTab);
+      setTabHistory(newHistory);
+      window.history.pushState(null, '', `#${previousTab}`);
+    }
   };
 
   // Verify URL hash on load and when it changes
@@ -161,17 +179,43 @@ function App() {
             
             <nav className="main-nav">
               <ul>
-                  <li><a href="#prediccion" className={activeTab === 'prediccion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'prediccion')}>Predicción Sísmica</a></li>
-                  <li><a href="#correlacion" className={activeTab === 'correlacion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'correlacion')}>Correlación Solar</a></li>
-                  <li><a href="#mapa" className={activeTab === 'mapa' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'mapa')}>Mapa de Riesgo</a></li>
-                  <li><a href="#acerca" className={activeTab === 'acerca' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'acerca')}>Acerca del Proyecto</a></li>
-                </ul>
-              </nav>
+                <li><a href="#prediccion" className={activeTab === 'prediccion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'prediccion')}>Predicción Sísmica</a></li>
+                <li><a href="#correlacion" className={activeTab === 'correlacion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'correlacion')}>Correlación Solar</a></li>
+                <li><a href="#mapa" className={activeTab === 'mapa' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'mapa')}>Mapa de Riesgo</a></li>
+                <li><a href="#acerca" className={activeTab === 'acerca' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'acerca')}>Acerca del Proyecto</a></li>
+                {tabHistory.length > 1 && (
+                  <li className="nav-back"><button onClick={handleGoBack} className="back-button">Volver</button></li>
+                )}
+              </ul>
+            </nav>
+            
+            <main className="App-content">
+              <div className="breadcrumb">
+                {tabHistory.map((tab, index) => (
+                  <span key={index}>
+                    {index > 0 && <span className="breadcrumb-separator"> &gt; </span>}
+                    <span 
+                      className={index === tabHistory.length - 1 ? 'breadcrumb-current' : 'breadcrumb-link'} 
+                      onClick={index !== tabHistory.length - 1 ? () => {
+                        setTabHistory(prev => prev.slice(0, index + 1));
+                        setActiveTab(tab);
+                        window.history.pushState(null, '', `#${tab}`);
+                      } : undefined}
+                    >
+                      {tab === 'prediccion' && 'Predicción Sísmica'}
+                      {tab === 'correlacion' && 'Correlación Solar'}
+                      {tab === 'mapa' && 'Mapa de Riesgo'}
+                      {tab === 'acerca' && 'Acerca del Proyecto'}
+                    </span>
+                  </span>
+                ))}
+              </div>
               
-              <main className="App-content">
+              <div className="tab-content-container">
                 {renderActiveContent()}
-              </main>
-              
+              </div>
+            </main>
+            
               <footer className="App-footer">
                 <p>© 2025 Sistema de Predicción Sísmica | <a href="#acerca">Acerca del proyecto</a></p>
                 <p className="data-attribution">Datos proporcionados por el Centro Sismológico Nacional de Chile y la Agencia Meteorológica de Japón</p>
