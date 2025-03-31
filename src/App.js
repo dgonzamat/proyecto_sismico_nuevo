@@ -1,48 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import PrediccionSismica from './components/PrediccionSismica';
 
 function App() {
   const [activeTab, setActiveTab] = useState('prediccion');
 
-  const handleTabClick = (tabId) => {
+  const handleTabClick = (e, tabId) => {
+    e.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
     setActiveTab(tabId);
-    // Añadir el hash a la URL para mantener la navegación por URL
-    window.location.hash = tabId;
+    window.history.pushState(null, '', `#${tabId}`); // Actualizar URL sin recargar la página
   };
 
-  // Verificar el hash de la URL al cargar
-  React.useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash && ['prediccion', 'correlacion', 'mapa', 'acerca'].includes(hash)) {
-      setActiveTab(hash);
-    }
+  // Verificar el hash de la URL al cargar y cuando cambia
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && ['prediccion', 'correlacion', 'mapa', 'acerca'].includes(hash)) {
+        setActiveTab(hash);
+      }
+    };
+
+    // Comprobar el hash inicial
+    handleHashChange();
+
+    // Escuchar cambios en el hash
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Sistema de Predicción Sísmica</h1>
-        <p>Basado en datos de centros sismológicos de Chile y Japón</p>
-      </header>
-      
-      <nav className="main-nav">
-        <ul>
-          <li><a href="#prediccion" className={activeTab === 'prediccion' ? 'active' : ''} onClick={() => handleTabClick('prediccion')}>Predicción Sísmica</a></li>
-          <li><a href="#correlacion" className={activeTab === 'correlacion' ? 'active' : ''} onClick={() => handleTabClick('correlacion')}>Correlación Solar</a></li>
-          <li><a href="#mapa" className={activeTab === 'mapa' ? 'active' : ''} onClick={() => handleTabClick('mapa')}>Mapa de Riesgo</a></li>
-          <li><a href="#acerca" className={activeTab === 'acerca' ? 'active' : ''} onClick={() => handleTabClick('acerca')}>Acerca del Proyecto</a></li>
-        </ul>
-      </nav>
-      
-      <main className="App-content">
-        {activeTab === 'prediccion' && (
-          <section id="prediccion" className="section-container">
-            <PrediccionSismica />
-          </section>
-        )}
-        
-        {activeTab === 'correlacion' && (
+  // Función para renderizar el contenido activo
+  const renderActiveContent = () => {
+    switch (activeTab) {
+      case 'correlacion':
+        return (
           <section id="correlacion" className="section-container">
             <h2>Correlación Solar</h2>
             <p>Esta sección mostrará datos sobre la correlación entre actividad solar y eventos sísmicos.</p>
@@ -50,9 +40,9 @@ function App() {
               <p>Módulo en desarrollo - Disponible en la próxima actualización</p>
             </div>
           </section>
-        )}
-        
-        {activeTab === 'mapa' && (
+        );
+      case 'mapa':
+        return (
           <section id="mapa" className="section-container">
             <h2>Mapa de Riesgo</h2>
             <p>Esta sección mostrará mapas interactivos de zonas de riesgo sísmico.</p>
@@ -60,9 +50,9 @@ function App() {
               <p>Módulo en desarrollo - Disponible en la próxima actualización</p>
             </div>
           </section>
-        )}
-        
-        {activeTab === 'acerca' && (
+        );
+      case 'acerca':
+        return (
           <section id="acerca" className="section-container">
             <h3 style={{ borderBottom: '2px solid #3f51b5', paddingBottom: '10px' }}>Acerca del Proyecto</h3>
             
@@ -101,7 +91,34 @@ function App() {
               </div>
             </div>
           </section>
-        )}
+        );
+      default:
+        return (
+          <section id="prediccion" className="section-container">
+            <PrediccionSismica />
+          </section>
+        );
+    }
+  };
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>Sistema de Predicción Sísmica</h1>
+        <p>Basado en datos de centros sismológicos de Chile y Japón</p>
+      </header>
+      
+      <nav className="main-nav">
+        <ul>
+          <li><a href="#prediccion" className={activeTab === 'prediccion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'prediccion')}>Predicción Sísmica</a></li>
+          <li><a href="#correlacion" className={activeTab === 'correlacion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'correlacion')}>Correlación Solar</a></li>
+          <li><a href="#mapa" className={activeTab === 'mapa' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'mapa')}>Mapa de Riesgo</a></li>
+          <li><a href="#acerca" className={activeTab === 'acerca' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'acerca')}>Acerca del Proyecto</a></li>
+        </ul>
+      </nav>
+      
+      <main className="App-content">
+        {renderActiveContent()}
       </main>
     </div>
   );
