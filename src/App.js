@@ -36,8 +36,20 @@ function App() {
           <section id="correlacion" className="section-container">
             <h2>Correlación Solar</h2>
             <p>Esta sección mostrará datos sobre la correlación entre actividad solar y eventos sísmicos.</p>
+            
             <div className="coming-soon">
-              <p>Módulo en desarrollo - Disponible en la próxima actualización</p>
+              <div className="coming-soon-icon">
+                <i className="fas fa-sun" style={{ fontSize: '48px', color: '#ff9800', marginBottom: '15px' }}></i>
+              </div>
+              <h3>Módulo en desarrollo</h3>
+              <p>Estamos trabajando en un análisis avanzado que correlaciona:</p>
+              <ul className="feature-list">
+                <li>Ciclos de actividad solar y manchas solares</li>
+                <li>Tormentas geomagnéticas y su influencia en la corteza terrestre</li>
+                <li>Variaciones en el campo electromagnético y su relación con la actividad sísmica</li>
+                <li>Análisis histórico de eventos sísmicos mayores y su coincidencia con picos de actividad solar</li>
+              </ul>
+              <p className="availability">Disponible en la próxima actualización (Q3 2025)</p>
             </div>
           </section>
         );
@@ -46,8 +58,21 @@ function App() {
           <section id="mapa" className="section-container">
             <h2>Mapa de Riesgo</h2>
             <p>Esta sección mostrará mapas interactivos de zonas de riesgo sísmico.</p>
+            
             <div className="coming-soon">
-              <p>Módulo en desarrollo - Disponible en la próxima actualización</p>
+              <div className="coming-soon-icon">
+                <i className="fas fa-map-marked-alt" style={{ fontSize: '48px', color: '#4CAF50', marginBottom: '15px' }}></i>
+              </div>
+              <h3>Módulo en desarrollo</h3>
+              <p>Estamos implementando un sistema de mapas interactivos que incluirá:</p>
+              <ul className="feature-list">
+                <li>Visualización de zonas de subducción y fallas geológicas activas</li>
+                <li>Mapas de calor de probabilidad sísmica por región</li>
+                <li>Historial de terremotos mayores a 7.0 desde 1900</li>
+                <li>Proyecciones de riesgo sísmico para infraestructura crítica</li>
+                <li>Datos de densidad poblacional superpuestos a zonas de riesgo</li>
+              </ul>
+              <p className="availability">Disponible en la próxima actualización (Q2 2025)</p>
             </div>
           </section>
         );
