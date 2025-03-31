@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/proyecto_sismico_nuevo/static/css/main.a31f9a31.css",
-    "main.js": "/proyecto_sismico_nuevo/static/js/main.51df1edd.js",
+    "main.js": "/proyecto_sismico_nuevo/static/js/main.c3b193f6.js",
     "static/js/453.a75a66de.chunk.js": "/proyecto_sismico_nuevo/static/js/453.a75a66de.chunk.js",
     "index.html": "/proyecto_sismico_nuevo/index.html",
     "main.a31f9a31.css.map": "/proyecto_sismico_nuevo/static/css/main.a31f9a31.css.map",
-    "main.51df1edd.js.map": "/proyecto_sismico_nuevo/static/js/main.51df1edd.js.map",
+    "main.c3b193f6.js.map": "/proyecto_sismico_nuevo/static/js/main.c3b193f6.js.map",
     "453.a75a66de.chunk.js.map": "/proyecto_sismico_nuevo/static/js/453.a75a66de.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a31f9a31.css",
-    "static/js/main.51df1edd.js"
+    "static/js/main.c3b193f6.js"
   ]
 }
