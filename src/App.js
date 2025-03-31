@@ -8,9 +8,12 @@ import MapaRiesgo from './components/MapaRiesgo';
 export const ThemeContext = createContext();
 
 function App() {
-  const [activeTab, setActiveTab] = useState('prediccion');
+  // Change the default active tab from 'prediccion' to 'mapa'
+  const [activeTab, setActiveTab] = useState('mapa');
   const [darkMode, setDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  // If you have the tabHistory state, update it too
+  const [tabHistory, setTabHistory] = useState(['mapa']);
   
   // Verificar preferencia de tema guardada
   useEffect(() => {
