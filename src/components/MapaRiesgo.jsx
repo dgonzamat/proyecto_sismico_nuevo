@@ -1,41 +1,103 @@
 import React, { useState, useEffect } from 'react';
+import { obtenerSunspotNumberActual, contarSismosCinturonFuego } from '../api/sismos';
 
-const MapaRiesgo = () => {
+const MapaRiesgo = ({ datosHistoricos = [] }) => {
   const [zonaRiesgo, setZonaRiesgo] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [regionSeleccionada, setRegionSeleccionada] = useState(null);
-  
+  const [sunspotNumber, setSunspotNumber] = useState(null);
+  const [sismosCinturon, setSismosCinturon] = useState(null);
+  const [errorFactores, setErrorFactores] = useState(null);
+
+  // Definición de regiones y zonas
+  const regiones = [
+    { id: "CL-AP", name: "Arica y Parinacota", zona: "Arica-Iquique" },
+    { id: "CL-TA", name: "Tarapacá", zona: "Arica-Iquique" },
+    { id: "CL-AN", name: "Antofagasta", zona: "Iquique-Antofagasta" },
+    { id: "CL-AT", name: "Atacama", zona: "Taltal-Huasco" },
+    { id: "CL-CO", name: "Coquimbo", zona: "Huasco-La Serena" },
+    { id: "CL-VS", name: "Valparaíso", zona: "La Serena-Illapel" },
+    { id: "CL-RM", name: "Región Metropolitana", zona: "La Serena-Illapel" },
+    { id: "CL-LI", name: "O'Higgins", zona: "La Serena-Illapel" },
+    { id: "CL-ML", name: "Maule", zona: "La Serena-Illapel" },
+    { id: "CL-BI", name: "Biobío", zona: "Valdivia-Chiloé" },
+    { id: "CL-AR", name: "La Araucanía", zona: "Valdivia-Chiloé" },
+    { id: "CL-LR", name: "Los Ríos", zona: "Valdivia-Chiloé" },
+    { id: "CL-LL", name: "Los Lagos", zona: "Valdivia-Chiloé" },
+    { id: "CL-AI", name: "Aysén", zona: "Valdivia-Chiloé" },
+    { id: "CL-MA", name: "Magallanes", zona: "Valdivia-Chiloé" },
+  ];
+
+  // Calcular el periodo promedio y el último gran sismo por zona
+  function calcularEstadisticasZona(zona, datos) {
+    const magnitudMin = 7.0;
+    const sismosGrandes = datos.filter(s => s.magnitud >= magnitudMin && s.ubicacion && s.ubicacion.toLowerCase().includes(zona.toLowerCase().split('-')[0]));
+    if (sismosGrandes.length === 0) return { ultimo: null, periodo: null, magnitud: null };
+    const años = sismosGrandes.map(s => s.año).sort((a, b) => a - b);
+    const ultimo = Math.max(...años);
+    let periodo = null;
+    if (años.length > 1) {
+      const difs = años.slice(1).map((a, i) => a - años[i]);
+      periodo = difs.reduce((a, b) => a + b, 0) / difs.length;
+    }
+    const mags = sismosGrandes.map(s => s.magnitud);
+    const magnitud = mags.length > 0 ? (mags.reduce((a, b) => a + b, 0) / mags.length) : 8.0;
+    return { ultimo, periodo, magnitud };
+  }
+
   useEffect(() => {
-    // Simular carga de datos de zonas de riesgo
-    const cargarDatos = async () => {
-      // Simular retraso de carga
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Datos de zonas de riesgo sísmico en Chile
-      const datos = [
-        { id: "CL-AP", name: "Arica y Parinacota", riesgo: 92, ultimoSismo: 2014, magnitudEsperada: 8.6 },
-        { id: "CL-TA", name: "Tarapacá", riesgo: 88, ultimoSismo: 2014, magnitudEsperada: 8.2 },
-        { id: "CL-AN", name: "Antofagasta", riesgo: 75, ultimoSismo: 2023, magnitudEsperada: 8.0 },
-        { id: "CL-AT", name: "Atacama", riesgo: 97, ultimoSismo: 1922, magnitudEsperada: 8.7 },
-        { id: "CL-CO", name: "Coquimbo", riesgo: 85, ultimoSismo: 2015, magnitudEsperada: 8.4 },
-        { id: "CL-VS", name: "Valparaíso", riesgo: 78, ultimoSismo: 2010, magnitudEsperada: 8.5 },
-        { id: "CL-RM", name: "Región Metropolitana", riesgo: 65, ultimoSismo: 2010, magnitudEsperada: 8.0 },
-        { id: "CL-LI", name: "O'Higgins", riesgo: 60, ultimoSismo: 2010, magnitudEsperada: 7.8 },
-        { id: "CL-ML", name: "Maule", riesgo: 70, ultimoSismo: 2010, magnitudEsperada: 8.0 },
-        { id: "CL-BI", name: "Biobío", riesgo: 65, ultimoSismo: 2010, magnitudEsperada: 8.2 },
-        { id: "CL-AR", name: "La Araucanía", riesgo: 55, ultimoSismo: 2010, magnitudEsperada: 7.5 },
-        { id: "CL-LR", name: "Los Ríos", riesgo: 75, ultimoSismo: 1960, magnitudEsperada: 8.5 },
-        { id: "CL-LL", name: "Los Lagos", riesgo: 88, ultimoSismo: 1960, magnitudEsperada: 9.0 },
-        { id: "CL-AI", name: "Aysén", riesgo: 40, ultimoSismo: 2007, magnitudEsperada: 7.2 },
-        { id: "CL-MA", name: "Magallanes", riesgo: 30, ultimoSismo: 1949, magnitudEsperada: 7.0 },
-      ];
-      
-      setZonaRiesgo(datos);
-      setCargando(false);
+    const calcularRiesgoRegiones = async () => {
+      setCargando(true);
+      setErrorFactores(null);
+      try {
+        const [sunspot, sismosFuego] = await Promise.all([
+          obtenerSunspotNumberActual(),
+          contarSismosCinturonFuego()
+        ]);
+        setSunspotNumber(sunspot);
+        setSismosCinturon(sismosFuego);
+        const añoActual = 2025;
+        const zonas = regiones.map(region => {
+          const { ultimo, periodo, magnitud } = calcularEstadisticasZona(region.zona, datosHistoricos);
+          if (!ultimo || !periodo) {
+            return {
+              ...region,
+              riesgo: 0,
+              ultimoSismo: '-',
+              magnitudEsperada: 8.0
+            };
+          }
+          const t = añoActual - ultimo;
+          const T = periodo;
+          let pBase = 1 - Math.exp(-t / T);
+          let ajusteSolar = 0;
+          if (sunspot !== null) {
+            if (sunspot > 100) ajusteSolar = 0.05;
+            else if (sunspot > 50) ajusteSolar = 0.02;
+          }
+          let ajusteFuego = 0;
+          if (sismosFuego !== null) {
+            if (sismosFuego > 2) ajusteFuego = 0.05;
+            else if (sismosFuego > 0) ajusteFuego = 0.02;
+          }
+          let probabilidad = Math.min(0.99, pBase + ajusteSolar + ajusteFuego);
+          return {
+            ...region,
+            riesgo: Math.round(probabilidad * 100),
+            ultimoSismo: ultimo,
+            magnitudEsperada: parseFloat(magnitud.toFixed(1))
+          };
+        });
+        setZonaRiesgo(zonas);
+      } catch (e) {
+        setErrorFactores('Error al obtener factores solares o del Cinturón de Fuego');
+      } finally {
+        setCargando(false);
+      }
     };
-    
-    cargarDatos();
-  }, []);
+    calcularRiesgoRegiones();
+    // eslint-disable-next-line
+  }, [datosHistoricos]);
   
   // Función para determinar el color basado en el nivel de riesgo
   const getColorByRisk = (riesgo) => {
@@ -54,9 +116,26 @@ const MapaRiesgo = () => {
     return <div style={{ textAlign: 'center', padding: '50px' }}>Cargando mapa de riesgo sísmico...</div>;
   }
 
+  if (!cargando && datosHistoricos.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px' }}>
+        <h2>No hay datos sísmicos reales disponibles para mostrar el mapa de riesgo.</h2>
+        <p>Intenta actualizar o revisa la conexión con las fuentes de datos oficiales.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="mapa-riesgo-container">
       <h2>Mapa de Riesgo Sísmico de Chile (2025)</h2>
+      <div style={{ margin: '10px 0', fontSize: '14px', color: '#333' }}>
+        <strong>Sunspot Number actual:</strong> {sunspotNumber !== null ? sunspotNumber : 'Cargando...'} | <strong>Sismos recientes en el Cinturón de Fuego:</strong> {sismosCinturon !== null ? sismosCinturon : 'Cargando...'}
+      </div>
+      {errorFactores && (
+        <div style={{ textAlign: 'center', padding: '10px', backgroundColor: '#ffebee', borderRadius: '4px', marginBottom: '20px', color: '#b71c1c' }}>
+          <p>{errorFactores}</p>
+        </div>
+      )}
       <p style={{ textAlign: 'center', marginBottom: '30px' }}>
         Visualización de las zonas con mayor probabilidad de actividad sísmica en los próximos 5 años
       </p>
