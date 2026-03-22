@@ -1,6 +1,53 @@
+/* ─── VARIABLES GLOBALES ─────────────────────────────────────────────────────
+ * Única fuente de verdad para colores, contrastes y tipografía.
+ * Todos los componentes deben usar estas variables en lugar de valores hardcoded.
+ * ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Escala de riesgo sísmico — consistente en toda la app */
+  --risk-critical:   #b71c1c;  /* rojo oscuro   – CRÍTICO   */
+  --risk-very-high:  #d84315;  /* naranja oscuro – MUY ALTO */
+  --risk-high:       #e65100;  /* naranja        – ALTO     */
+  --risk-moderate:   #f57f17;  /* ámbar          – MODERADO */
+  --risk-low:        #2e7d32;  /* verde oscuro   – BAJO     */
+  --risk-very-low:   #1565c0;  /* azul           – MUY BAJO */
+
+  /* Textos con contraste WCAG AA mínimo 4.5:1 sobre fondo blanco */
+  --text-primary:   #212121;   /* 16:1 — títulos y cuerpo principal */
+  --text-secondary: #424242;   /* 10:1 — subtítulos y metadatos    */
+  --text-muted:     #616161;   /*  6:1 — notas, timestamps         */
+
+  /* Superficies */
+  --bg-page:      #f5f5f5;
+  --bg-card:      #ffffff;
+  --bg-accent:    #e8f0fe;
+  --border-light: #e0e0e0;
+
+  /* Marca */
+  --brand:        #1565c0;
+  --brand-dark:   #0d47a1;
+
+  /* Tipografía */
+  --font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --font-size-xs:  12px;
+  --font-size-sm:  13px;
+  --font-size-md:  14px;
+  --font-size-lg:  16px;
+  --font-size-xl:  20px;
+}
+
+/* ─── RESET DE CONTRASTE ─────────────────────────────────────────────────── */
+/* Reemplaza todos los #555 heredados que no cumplen WCAG AA */
+.App-header p,
+.subtitle,
+p[style*="color: #555"],
+p[style*="color:#555"] {
+  color: var(--text-secondary) !important;
+}
+
 .App {
   text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-base);
+  color: var(--text-primary);
 }
 
 .App-header {

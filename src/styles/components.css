@@ -59,3 +59,40 @@ th {
 tr:hover {
   background-color: rgba(63, 81, 181, 0.05);
 }
+
+/* ─── SCROLL HORIZONTAL EN TABLAS (mobile) ───────────────────────────────── */
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Indicador sutil de scroll en mobile */
+  background:
+    linear-gradient(to right, white 30%, rgba(255,255,255,0)),
+    linear-gradient(to left,  white 30%, rgba(255,255,255,0)) 100% 0,
+    radial-gradient(farthest-side at 0%   50%, rgba(0,0,0,.12), transparent),
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.12), transparent) 100% 0;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+/* Asegura que las tablas anchas fuercen scroll en pantallas pequeñas */
+@media (max-width: 768px) {
+  .prediction-table,
+  .historial-table {
+    min-width: 800px;
+  }
+
+  /* Oculta columnas menos críticas en móvil muy estrecho */
+  @media (max-width: 480px) {
+    .prediction-table,
+    .historial-table {
+      min-width: 600px;
+    }
+  }
+}
+
+/* ─── SPINNER (alias para uso inline) ───────────────────────────────────── */
+.loading-spinner {
+  display: block;
+}

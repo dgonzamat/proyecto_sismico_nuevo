@@ -7,8 +7,8 @@ import MapaRiesgo from './components/MapaRiesgo';
 import Acerca from './components/Acerca';
 import HistorialSismico from './components/HistorialSismico';
 import MapaSismosRecientes from './components/MapaSismosRecientes';
-import { calcularEnergiaSismica } from './api/sismos';
 import { terremotosChile } from './api/datosTerremotosChile';
+import { SEGMENTOS_CHILE } from './api/modeloSismologico';
 
 
 function App() {
@@ -27,24 +27,24 @@ function App() {
       if (terremotosChile && terremotosChile.length > 0) {
         setFuenteDeDatos('Histórico (interno)');
         // Mapear al formato esperado y asignar zona
+        // Asignar zona usando los mismos segmentos del modelo predictivo (SEGMENTOS_CHILE)
+        // para garantizar consistencia entre HistorialSismico y PrediccionSismica.
         const datosMapeados = terremotosChile.map(t => {
-          // Asignar zona por latitud
-          let zona = '';
-          if (t.lat >= -20.5 && t.lat <= -18.0) zona = 'Arica-Iquique';
-          else if (t.lat > -24.0 && t.lat < -20.5) zona = 'Iquique-Antofagasta';
-          else if (t.lat > -26.5 && t.lat <= -24.0) zona = 'Antofagasta-Taltal';
-          else if (t.lat > -29.5 && t.lat <= -26.5) zona = 'Taltal-Huasco';
-          else if (t.lat > -30.5 && t.lat <= -29.5) zona = 'Huasco-La Serena';
-          else if (t.lat > -32.5 && t.lat <= -30.5) zona = 'La Serena-Illapel';
-          else if (t.lat > -41.5 && t.lat <= -39.5) zona = 'Valdivia-Chiloé';
-          else zona = '';
+          const segmento = SEGMENTOS_CHILE.find(
+            s => t.lat >= s.minLat && t.lat <= s.maxLat &&
+                 t.lon >= s.minLon && t.lon <= s.maxLon
+          );
+          const zona = segmento ? segmento.nombre : 'Otras zonas de Chile';
           return {
             año: parseInt(t.fecha.split('/')[2]),
             magnitud: t.mw || t.ms,
             ubicacion: zona,
             zona,
+            segmentoId: segmento ? segmento.id : null,
             referencia: t.efecto,
             profundidad: t.profundidad,
+            lat: t.lat,
+            lon: t.lon,
             fecha: t.fecha,
             hora: t.hora
           };
@@ -110,16 +110,36 @@ function App() {
         <div className="header-content">
           <h1 className="title">Sistema de Predicción Sísmica</h1>
           <p className="subtitle">Basado en datos de centros sismológicos de Chile</p>
-          <nav className="main-nav">
-            <ul>
-              <li><a href="#prediccion" className={tab === 'prediccion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'prediccion')}>Predicción Sísmica</a></li>
-              <li><a href="#historial" className={tab === 'historial' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'historial')}>Historial Sísmico</a></li>
-              <li><a href="#sismos-recientes" className={tab === 'sismos-recientes' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'sismos-recientes')}>Sismos Recientes</a></li>
-              <li><a href="#correlacion" className={tab === 'correlacion' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'correlacion')}>Correlación Solar</a></li>
-              <li><a href="#mapa" className={tab === 'mapa' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'mapa')}>Mapa de Riesgo</a></li>
-              <li><a href="#acerca" className={tab === 'acerca' ? 'active' : ''} onClick={(e) => handleTabClick(e, 'acerca')}>Acerca del Proyecto</a></li>
+          {/* Navegación principal con ARIA completo (WCAG 2.1 AA) */}
+          <nav className="main-nav" aria-label="Navegación principal">
+            <ul role="tablist">
+              {[
+                { id: 'prediccion',      label: 'Predicción Sísmica' },
+                { id: 'mapa',            label: 'Mapa de Riesgo'     },
+                { id: 'historial',       label: 'Historial Sísmico'  },
+                { id: 'sismos-recientes',label: 'Sismos Recientes'   },
+                { id: 'correlacion',     label: 'Correlación Solar ⚠' },
+                { id: 'acerca',          label: 'Acerca'             },
+              ].map(({ id, label }) => (
+                <li key={id} role="presentation">
+                  <a
+                    href={`#${id}`}
+                    role="tab"
+                    aria-selected={tab === id}
+                    aria-current={tab === id ? 'page' : undefined}
+                    className={tab === id ? 'active' : ''}
+                    onClick={(e) => handleTabClick(e, id)}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
               {tabHistory.length > 1 && (
-                <li className="nav-back"><button onClick={handleGoBack} className="back-button">Volver</button></li>
+                <li role="presentation" className="nav-back">
+                  <button onClick={handleGoBack} className="back-button" aria-label="Volver a la sección anterior">
+                    ← Volver
+                  </button>
+                </li>
               )}
             </ul>
           </nav>

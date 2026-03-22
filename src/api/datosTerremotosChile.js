@@ -1,5 +1,30 @@
-// Lista de terremotos históricos de Chile (M>=7.0, desde 1900)
+// Lista de terremotos históricos de Chile (M>=7.0)
+//
+// Fuentes:
+//   - Instrumental (1900–presente): USGS/NEIC, Centro Sismológico Nacional (CSN) de Chile.
+//   - Pre-instrumental (antes de 1900): Montessus de Ballore (1912), Lomnitz (1970),
+//     Comte & Pardo (1991), Nishenko (1991), Cisternas et al. (2005).
+//
+// NOTA SOBRE EVENTOS PRE-INSTRUMENTALES:
+//   Las magnitudes anteriores a ~1960 son Ms o estimaciones de intensidad convertidas.
+//   La incertidumbre en epicentro y magnitud es mayor (±0.3 Mw, ±0.5° lat/lon).
+//
+// ─── EVENTOS PRE-INSTRUMENTALES RELEVANTES PARA EL MODELO PREDICTIVO ────────
+//
+// 09/05/1877  Mw~8.8  Iquique–Arica: último gran sismo de interfaz en el segmento Norte Grande.
+//   Fuente: Lomnitz (1970), Nishenko (1991), Compte & Pardo (1991).
+//   Generó tsunami transoceánico destructivo (Hawái, Japón). Ruptura ~500 km costa norte Chile.
+//   Lat estimada: ~-19.6°, Lon: ~-70.2° (hipocentrales de Nishenko 1991).
+//
+// 16/08/1868  Mw~9.0  Arica (actual Perú/Chile): evento que precedió al de 1877.
+//   Incluido como contexto histórico. El ciclo de recurrencia del segmento Arica usa 1877.
+//
 export const terremotosChile = [
+  // ── Pre-instrumental documentado ────────────────────────────────────────────
+  // Terremoto de Iquique 1877: último gran sismo de interfaz para el segmento Norte Grande.
+  // Fuente: Lomnitz (1970); Nishenko (1991); confirmado por registros de tsunami (NGDC/WDS).
+  { fecha: '09/05/1877', hora: '21:16', lat: -19.600, lon: -70.200, ms: null, mw: 8.8, profundidad: 25, efecto: 'TD', fuenteHistorica: true },
+  // ── Instrumental (desde 1900) ────────────────────────────────────────────────
   { fecha: '16/08/1906', hora: '19:48', lat: -33.000, lon: -72.000, ms: 7.9, mw: 8.2, profundidad: 25, efecto: 'TM' },
   { fecha: '08/06/1909', hora: '1:00', lat: -26.500, lon: -70.500, ms: 7.6, mw: null, profundidad: null, efecto: '-' },
   { fecha: '04/10/1910', hora: '19:00', lat: -22.000, lon: -69.000, ms: 7.3, mw: null, profundidad: null, efecto: '-' },
